@@ -15,20 +15,15 @@ namespace ShopReports.Services
 
         public ProductCategoryReport GetProductCategoryReport()
         {
-            var productCategoryLines = shopContext.Products
-                .Include(p => p.Title.Category) // Include necessary relationships
-                .GroupBy(p => new { CategoryId = p.Title.Category.Id, CategoryName = p.Title.Category.Name })
-                .OrderBy(g => g.Key.CategoryName) // Order by category name
-                .Select(g => new ProductCategoryReportLine
+            var productCategoryLines = shopContext.Categories
+                .OrderBy(category => category.Name)
+                .Select(category => new ProductCategoryReportLine
                 {
-                    CategoryId = g.Key.CategoryId, CategoryName = g.Key.CategoryName
+                    CategoryId = category.Id, CategoryName = category.Name
                 })
                 .ToList();
 
-            // Get the current date as the report generation date
             var reportGenerationDate = DateTime.Now;
-
-            // Create the product category report
             var productCategoryReport = new ProductCategoryReport(productCategoryLines, reportGenerationDate);
 
             return productCategoryReport;
