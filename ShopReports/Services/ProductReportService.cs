@@ -80,8 +80,23 @@ namespace ShopReports.Services
 
         public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var productTitleSalesRevenueLines = shopContext.OrderDetails
+                .Include(od => od.Product.Title)
+                .GroupBy(od => od.Product.Title.Title)
+                .Select(g => new ProductTitleSalesRevenueReportLine
+                {
+                    ProductTitleName = g.Key,
+                    SalesRevenue = g.Sum(od => od.PriceWithDiscount),
+                    SalesAmount = g.Sum(od => od.ProductAmount)
+                })
+                .OrderByDescending(line => line.SalesRevenue)
+                .ToList();
+
+            var reportGenerationDate = DateTime.Now;
+            var productTitleSalesRevenueReport =
+                new ProductTitleSalesRevenueReport(productTitleSalesRevenueLines, reportGenerationDate);
+
+            return productTitleSalesRevenueReport;
         }
     }
 }
