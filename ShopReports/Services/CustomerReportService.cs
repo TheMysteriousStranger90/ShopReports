@@ -35,10 +35,8 @@ namespace ShopReports.Services
                 }).Take(15)
                 .ToList();
 
-            // Get the current date as the report generation date
             var reportGenerationDate = DateTime.Now;
 
-            // Create the customer sales revenue report
             var customerSalesRevenueReport =
                 new CustomerSalesRevenueReport(customerSalesRevenueLines, reportGenerationDate);
 
