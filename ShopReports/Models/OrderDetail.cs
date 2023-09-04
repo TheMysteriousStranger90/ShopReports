@@ -24,9 +24,10 @@ namespace ShopReports.Models
 
         [Column("product_amount")] public int ProductAmount { get; set; }
 
-
+        [ForeignKey("OrderId")]
         public Order Order { get; set; }
 
+        [ForeignKey("ProductId")]
         public Product Product { get; set; }
     }
 }

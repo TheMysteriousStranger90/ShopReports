@@ -14,6 +14,7 @@ namespace ShopReports.Models
         [ForeignKey("City")]
         public int CityId { get; set; }
 
+        [ForeignKey("CityId")]
         public City City { get; set; }
 
         public virtual IList<SupermarketLocation> Supermarkets { get; set; }

@@ -16,6 +16,6 @@ namespace ShopReports.Models
 
         public virtual IList<PersonContact> Contacts { get; set; }
 
-        [ForeignKey("CustomerId")] public Customer Customer { get; set; }
+        public Customer Customer { get; set; }
     }
 }

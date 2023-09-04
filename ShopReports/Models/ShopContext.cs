@@ -44,10 +44,16 @@ namespace ShopReports.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Category>()
-                .HasMany(category => category.Titles)
-                .WithOne(productTitle => productTitle.Category)
-                .HasForeignKey(productTitle => productTitle.CategoryId);
+            modelBuilder.Entity<Customer>()
+                .HasOne(customer => customer.Person)
+                .WithOne(person => person.Customer)
+                .HasForeignKey<Person>(person => person.Id); // Assuming PersonId is the foreign key in the Person table
+
+            // Configure the foreign key for the PersonContact entity
+            modelBuilder.Entity<PersonContact>()
+                .HasOne(contact => contact.Person)
+                .WithMany(person => person.Contacts)
+                .HasForeignKey(contact => contact.PersonId);
         }
     }
 }
