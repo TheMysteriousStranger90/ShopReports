@@ -15,20 +15,56 @@ namespace ShopReports.Services
 
         public ProductCategoryReport GetProductCategoryReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var productCategoryLines = shopContext.Categories
+                .Select(category => new ProductCategoryReportLine
+                {
+                    CategoryId = category.Id, CategoryName = category.Name,
+                    // You can add more properties as needed.
+                })
+                .ToList();
+
+            // Create a ProductCategoryReport using the retrieved data.
+            var report = new ProductCategoryReport(productCategoryLines, DateTime.Now);
+
+            return report;
         }
 
         public ProductReport GetProductReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var productLines = shopContext.Products
+                .Select(product => new ProductReportLine
+                {
+                    ProductId = product.Id,
+                    ProductTitle = product.Title.Title,
+                    Manufacturer = product.Manufacturer.Name,
+                })
+                .ToList();
+
+            var report = new ProductReport(productLines, DateTime.Now);
+
+            return report;
         }
 
         public FullProductReport GetFullProductReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var fullProductLines = shopContext.Products
+                .Join(
+                    shopContext.Categories,
+                    product => product.Id,
+                    category => category.Id,
+                    (product, category) => new FullProductReportLine
+                    {
+                        ProductId = product.Id,
+                        Name = product.Title.Title,
+                        CategoryId = category.Id,
+                        Category = category.Name,
+                        Manufacturer = product.Manufacturer.Name,
+                    })
+                .ToList();
+
+            var report = new FullProductReport(fullProductLines, DateTime.Now);
+
+            return report;
         }
 
         public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReport()

@@ -12,6 +12,6 @@ namespace ShopReports.Models
 
         [Column("country")] public string Country { get; set; }
 
-        [InverseProperty("City")] public virtual IList<Location> Locations { get; set; }
+        public virtual IList<Location> Locations { get; set; }
     }
 }

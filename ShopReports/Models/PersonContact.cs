@@ -6,7 +6,9 @@ namespace ShopReports.Models
     [Table("person_contacts")]
     public class PersonContact
     {
-        [Key] [Column("person_contact_id")] public int Id { get; set; }
+        [Key]
+        [Column("person_contact_id")]
+        public int Id { get; set; }
 
         [Column("person_id")]
         [ForeignKey("Person")]
@@ -16,7 +18,8 @@ namespace ShopReports.Models
         [ForeignKey("ContactType")]
         public int ContactTypeId { get; set; }
 
-        [Column("contact_value")] public string Value { get; set; }
+        [Column("contact_value")]
+        public string Value { get; set; }
 
         public Person Person { get; set; }
 

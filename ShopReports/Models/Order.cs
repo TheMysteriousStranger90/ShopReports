@@ -20,7 +20,7 @@ namespace ShopReports.Models
 
         public SupermarketLocation SupermarketLocation { get; set; }
 
-        [ForeignKey("Customer")] public Customer? Customer { get; set; }
+        [ForeignKey("CustomerId")] public Customer? Customer { get; set; }
 
         public virtual IList<OrderDetail> Details { get; set; }
     }

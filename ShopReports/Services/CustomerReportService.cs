@@ -15,8 +15,23 @@ namespace ShopReports.Services
 
         public CustomerSalesRevenueReport GetCustomerSalesRevenueReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var customerSalesRevenueLines = shopContext.Customers
+                .Select(customer => new CustomerSalesRevenueReportLine
+                {
+                    CustomerId = customer.Id,
+                    PersonFirstName = customer.Person.FirstName,
+                    PersonLastName = customer.Person.LastName,
+                    SalesRevenue = customer.Orders
+                        .SelectMany(order => order.Details)
+                        .Sum(detail => detail.PriceWithDiscount * detail.ProductAmount),
+                    // You can add more properties as needed.
+                })
+                .ToList();
+
+            // Create a CustomerSalesRevenueReport using the retrieved data.
+            var report = new CustomerSalesRevenueReport(customerSalesRevenueLines, DateTime.Now);
+
+            return report;
         }
     }
 }

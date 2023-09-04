@@ -38,5 +38,16 @@ namespace ShopReports.Models
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(category => category.Titles)
+                .WithOne(productTitle => productTitle.Category)
+                .HasForeignKey(productTitle => productTitle.CategoryId);
+        }
     }
 }

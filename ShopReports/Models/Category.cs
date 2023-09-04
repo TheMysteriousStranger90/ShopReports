@@ -10,6 +10,6 @@ namespace ShopReports.Models
 
         [Column("category_name")] public string Name { get; set; }
 
-        [InverseProperty("Category")] public virtual IList<ProductTitle> Titles { get; set; }
+        public virtual IList<ProductTitle> Titles { get; set; }
     }
 }

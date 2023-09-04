@@ -10,6 +10,6 @@ namespace ShopReports.Models
 
         [Column("contact_type_name")] public string Name { get; set; }
 
-        [InverseProperty("ContactType")] public virtual IList<PersonContact> Contacts { get; set; }
+        public virtual IList<PersonContact> Contacts { get; set; }
     }
 }
