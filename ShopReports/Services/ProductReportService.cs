@@ -15,25 +15,6 @@ namespace ShopReports.Services
 
         public ProductCategoryReport GetProductCategoryReport()
         {
-            /*
-            var productCategoryLines = shopContext.Products
-                .Include(p => p.Title.Category)
-                .Select(pc => new ProductCategoryReportLine
-                {
-                    CategoryId = pc.Id, CategoryName = pc.Title.Category.Name
-                })
-                .ToList();
-
-            // Get the current date as the report generation date
-            var reportGenerationDate = DateTime.Now;
-
-            // Create the product category report
-            var productCategoryReport = new ProductCategoryReport(productCategoryLines, reportGenerationDate);
-
-            return productCategoryReport;
-            */
-
-
             var productCategoryLines = shopContext.Products
                 .Include(p => p.Title.Category) // Include necessary relationships
                 .GroupBy(p => new { CategoryId = p.Title.Category.Id, CategoryName = p.Title.Category.Name })
@@ -76,8 +57,25 @@ namespace ShopReports.Services
 
         public FullProductReport GetFullProductReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var fullProductReportLines = shopContext.Products
+                .Include(p => p.Title)
+                .Include(p => p.Manufacturer)
+                .OrderBy(p => p.Title.Title)
+                .Select(p => new FullProductReportLine
+                {
+                    ProductId = p.Id,
+                    Name = p.Title.Title,
+                    CategoryId = p.Title.Category.Id,
+                    Category = p.Title.Category.Name,
+                    Manufacturer = p.Manufacturer.Name,
+                    Price = p.UnitPrice
+                })
+                .ToList();
+
+            var reportGenerationDate = DateTime.Now;
+            var fullProductReport = new FullProductReport(fullProductReportLines, reportGenerationDate);
+
+            return fullProductReport;
         }
 
         public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReport()
