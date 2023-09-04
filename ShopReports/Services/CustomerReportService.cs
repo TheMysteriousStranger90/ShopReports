@@ -16,22 +16,33 @@ namespace ShopReports.Services
         public CustomerSalesRevenueReport GetCustomerSalesRevenueReport()
         {
             var customerSalesRevenueLines = shopContext.Customers
-                .Select(customer => new CustomerSalesRevenueReportLine
+                .Select(c => new
                 {
-                    CustomerId = customer.Id,
-                    PersonFirstName = customer.Person.FirstName,
-                    PersonLastName = customer.Person.LastName,
-                    SalesRevenue = customer.Orders
-                        .SelectMany(order => order.Details)
-                        .Sum(detail => detail.PriceWithDiscount * detail.ProductAmount),
-                    // You can add more properties as needed.
+                    c.Id,
+                    c.Person.FirstName,
+                    c.Person.LastName,
+                    SalesRevenue = c.Orders
+                        .SelectMany(o => o.Details)
+                        .Sum(detail => detail.PriceWithDiscount)
                 })
+                .OrderByDescending(c => c.SalesRevenue)
+                .Select(c => new CustomerSalesRevenueReportLine
+                {
+                    CustomerId = c.Id,
+                    PersonFirstName = c.FirstName,
+                    PersonLastName = c.LastName,
+                    SalesRevenue = c.SalesRevenue
+                }).Take(15)
                 .ToList();
 
-            // Create a CustomerSalesRevenueReport using the retrieved data.
-            var report = new CustomerSalesRevenueReport(customerSalesRevenueLines, DateTime.Now);
+            // Get the current date as the report generation date
+            var reportGenerationDate = DateTime.Now;
 
-            return report;
+            // Create the customer sales revenue report
+            var customerSalesRevenueReport =
+                new CustomerSalesRevenueReport(customerSalesRevenueLines, reportGenerationDate);
+
+            return customerSalesRevenueReport;
         }
     }
 }

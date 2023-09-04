@@ -15,56 +15,55 @@ namespace ShopReports.Services
 
         public ProductCategoryReport GetProductCategoryReport()
         {
-            var productCategoryLines = shopContext.Categories
-                .Select(category => new ProductCategoryReportLine
+            /*
+            var productCategoryLines = shopContext.Products
+                .Include(p => p.Title.Category)
+                .Select(pc => new ProductCategoryReportLine
                 {
-                    CategoryId = category.Id, CategoryName = category.Name,
-                    // You can add more properties as needed.
+                    CategoryId = pc.Id, CategoryName = pc.Title.Category.Name
                 })
                 .ToList();
 
-            // Create a ProductCategoryReport using the retrieved data.
-            var report = new ProductCategoryReport(productCategoryLines, DateTime.Now);
+            // Get the current date as the report generation date
+            var reportGenerationDate = DateTime.Now;
 
-            return report;
+            // Create the product category report
+            var productCategoryReport = new ProductCategoryReport(productCategoryLines, reportGenerationDate);
+
+            return productCategoryReport;
+            */
+
+
+            var productCategoryLines = shopContext.Products
+                .Include(p => p.Title.Category) // Include necessary relationships
+                .GroupBy(p => new { CategoryId = p.Title.Category.Id, CategoryName = p.Title.Category.Name })
+                .OrderBy(g => g.Key.CategoryName) // Order by category name
+                .Select(g => new ProductCategoryReportLine
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.CategoryName
+                })
+                .ToList();
+
+            // Get the current date as the report generation date
+            var reportGenerationDate = DateTime.Now;
+
+            // Create the product category report
+            var productCategoryReport = new ProductCategoryReport(productCategoryLines, reportGenerationDate);
+
+            return productCategoryReport;
         }
 
         public ProductReport GetProductReport()
         {
-            var productLines = shopContext.Products
-                .Select(product => new ProductReportLine
-                {
-                    ProductId = product.Id,
-                    ProductTitle = product.Title.Title,
-                    Manufacturer = product.Manufacturer.Name,
-                })
-                .ToList();
-
-            var report = new ProductReport(productLines, DateTime.Now);
-
-            return report;
+            // TODO Implement the service method.
+            throw new NotImplementedException();
         }
 
         public FullProductReport GetFullProductReport()
         {
-            var fullProductLines = shopContext.Products
-                .Join(
-                    shopContext.Categories,
-                    product => product.Id,
-                    category => category.Id,
-                    (product, category) => new FullProductReportLine
-                    {
-                        ProductId = product.Id,
-                        Name = product.Title.Title,
-                        CategoryId = category.Id,
-                        Category = category.Name,
-                        Manufacturer = product.Manufacturer.Name,
-                    })
-                .ToList();
-
-            var report = new FullProductReport(fullProductLines, DateTime.Now);
-
-            return report;
+            // TODO Implement the service method.
+            throw new NotImplementedException();
         }
 
         public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReport()
