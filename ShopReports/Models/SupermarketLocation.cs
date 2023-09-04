@@ -3,12 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("supermarket_locations")]
     public class SupermarketLocation
     {
+        [Key]
+        [Column("supermarket_location_id")]
         public int Id { get; set; }
 
+        [Required]
+        [Column("supermarket_id")]
+        [ForeignKey("Supermarket")]
         public int SupermarketId { get; set; }
 
+        [Required]
+        [Column("location_id")]
+        [ForeignKey("Location")]
         public int LocationId { get; set; }
 
         public Supermarket Supermarket { get; set; }

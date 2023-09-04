@@ -3,19 +3,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("shop_products")]
     public class Product
     {
-        public int Id { get; set; }
+        [Key] [Column("product_id")] public int Id { get; set; }
 
+        [Column("product_title_id")]
+        [ForeignKey("Title")]
         public int TitleId { get; set; }
 
+        [Column("product_manufacturer_id")]
+        [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
 
+        [Column("product_supplier_id")]
+        [ForeignKey("Supplier")]
         public int SupplierId { get; set; }
 
-        public decimal UnitPrice { get; set; }
+        [Column("unit_price")] public decimal UnitPrice { get; set; }
 
-        public string Description { get; set; }
+        [Column("comment")] public string Description { get; set; }
 
         public ProductTitle Title { get; set; }
 

@@ -3,14 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("location_city")]
     public class City
     {
-        public int Id { get; set; }
+        [Key] [Column("city_id")] public int Id { get; set; }
 
-        public string Name { get; set; }
+        [Column("city")] public string Name { get; set; }
 
-        public string Country { get; set; }
+        [Column("country")] public string Country { get; set; }
 
-        public virtual IList<Location> Locations { get; set; }
+        [InverseProperty("City")] public virtual IList<Location> Locations { get; set; }
     }
 }

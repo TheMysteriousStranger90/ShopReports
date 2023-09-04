@@ -3,15 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("person_contacts")]
     public class PersonContact
     {
-        public int Id { get; set; }
+        [Key] [Column("person_contact_id")] public int Id { get; set; }
 
+        [Column("person_id")]
+        [ForeignKey("Person")]
         public int PersonId { get; set; }
 
+        [Column("contact_type_id")]
+        [ForeignKey("ContactType")]
         public int ContactTypeId { get; set; }
 
-        public string Value { get; set; }
+        [Column("contact_value")] public string Value { get; set; }
 
         public Person Person { get; set; }
 

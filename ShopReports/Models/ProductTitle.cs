@@ -3,12 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("product_titles")]
     public class ProductTitle
     {
-        public int Id { get; set; }
+        [Key] [Column("product_title_id")] public int Id { get; set; }
 
-        public string Title { get; set; }
+        [Required] [Column("product_title")] public string Title { get; set; }
 
+        [Column("product_category_id")]
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }

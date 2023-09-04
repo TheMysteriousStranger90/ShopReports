@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopReports.Models
 {
+    [Table("customers")]
     public class Customer
     {
-        public int Id { get; set; }
+        [Key] [Column("customer_id")] public int Id { get; set; }
 
-        public string CardNumber { get; set; }
+        [Column("card_number")] public string CardNumber { get; set; }
 
-        public decimal Discount { get; set; }
+        [Column("discount")] public decimal Discount { get; set; }
 
         public Person Person { get; set; }
 
