@@ -40,8 +40,7 @@ namespace ShopReports.Services
                 .OrderBy(g => g.Key.CategoryName) // Order by category name
                 .Select(g => new ProductCategoryReportLine
                 {
-                    CategoryId = g.Key.CategoryId,
-                    CategoryName = g.Key.CategoryName
+                    CategoryId = g.Key.CategoryId, CategoryName = g.Key.CategoryName
                 })
                 .ToList();
 
@@ -56,8 +55,23 @@ namespace ShopReports.Services
 
         public ProductReport GetProductReport()
         {
-            // TODO Implement the service method.
-            throw new NotImplementedException();
+            var productReportLines = shopContext.Products
+                .Include(p => p.Title)
+                .Include(p => p.Manufacturer)
+                .OrderByDescending(p => p.Title.Title) // Sort by product title
+                .Select(p => new ProductReportLine
+                {
+                    ProductId = p.Id,
+                    ProductTitle = p.Title.Title,
+                    Manufacturer = p.Manufacturer.Name,
+                    Price = p.UnitPrice
+                })
+                .ToList();
+
+            var reportGenerationDate = DateTime.Now;
+            var productReport = new ProductReport(productReportLines, reportGenerationDate);
+
+            return productReport;
         }
 
         public FullProductReport GetFullProductReport()
